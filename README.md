@@ -14,6 +14,7 @@ install it yourself as:
 ```
 $> jwtear -h 
 
+
   888888 888       888 88888888888
     "88b 888   o   888     888
      888 888  d8b  888     888
@@ -32,11 +33,9 @@ Help menu:
        --generate-token             Generate JWT token.
        --generate-sig               Generate JWT signature.
        --header HEADER              JWT header (JSON format). (required for generate-token and generate-sig)
-                                      eg. {"typ":"JWT","alg":"HS256"}
+                                      eg. {"typ":"JWT","alg":"HS256"} | Supported algorithms: [HS256, RS512, etc]
        --payload PAYLOAD            JWT payload (JSON format). (required for generate-token and generate-sig)
                                       eg. {"login":"admin"}
-       --alg ALGORITHM              Algorithm name. (required for generate-token and generate-sig)
-                                      Supported algorithms: [HS256, RS512, etc]
        --key SECRET                 Secret Key for symmetric encryption. (required for generate-token and generate-sig)
                                       eg. P@ssw0rd
    -h, --help                       Show this help message
@@ -45,9 +44,9 @@ Usage:
   ruby jwtear.rb <OPTIONS>
 
 Example:
-jwtear --generate-token --header '{"typ":"JWT","alg":"HS256"}' --payload '{"login":"admin"}' --alg HS256 --key 'P@ssw0rd!'
-jwtear --generate-sig  --header '{"typ":"JWT","alg":"HS256"}' --payload '{"login":"admin"}' --alg HS256 --key 'P@ssw0rd!'
-jwtear --parse 'eyJI...6IJ9.kxMS...MjAMm.zEyN...TU2Njk3ZmE3OA'
+ruby jwtear.rb --generate-token --header '{"typ":"JWT","alg":"HS256"}' --payload '{"login":"admin"}' --key 'P@ssw0rd!'
+ruby jwtear.rb --generate-sig --header '{"typ":"JWT","alg":"HS256"}' --payload '{"login":"admin"}' --key 'P@ssw0rd!'
+ruby jwtear.rb --parse 'eyJwI...6IfJ9.kxrMS...MjAMm.zEybN...TU2Njk3ZmE3OA'
 ```
 
 ## Contributing
