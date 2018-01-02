@@ -32,7 +32,9 @@ module JWTear
   class JWT
     attr_accessor :token, :header, :payload
     attr_accessor :alg, :key, :data
-    attr_reader :signature, :alg_map, :json, :hash
+    attr_reader :json, :hash
+    attr_reader :signature, :rsa_private, :rsa_public
+
     def initialize(token='')
       @token = token
     end
@@ -43,7 +45,11 @@ module JWTear
       @type, @alg = @header['type'], @header['alg']
       @payload    = JSON.parse(Base64.urlsafe_decode64(_token[1]))
       @signature  = Base64.urlsafe_decode64(_token[2])
-      @json       = "#{@header}.#{@payload}.#{signature}"
+      set_hash_and_json
+    end
+
+    def set_hash_and_json
+      @json       = "#{@header}.#{@payload}.#{@signature}"
       @hash       = {header: @header, payload: @payload, signature: @signature}
     end
 
@@ -54,9 +60,9 @@ module JWTear
         when 'HS256'
           OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha256'), key, data)
         when 'RS256'
-          key = OpenSSL::PKey::RSA.new
-          @signature = key.sign(OpenSSL::Digest::SHA256.new, data)
-          pubkey = key.public_key
+          @rsa_private = OpenSSL::PKey::RSA.generate(2048)
+          @rsa_public  = rsa_private.public_key
+          @signature   = rsa_private.sign(OpenSSL::Digest::SHA256.new, data)
         when 'XXXX'
           # TO SOMETHING
         when 'None' || 'none' || ''
@@ -80,6 +86,10 @@ module JWTear
       signature = Base64.urlsafe_encode64(sig)
       token = [header, payload, signature].join('.')
       parse(token)
+      if ['RS256'].include? @alg # To avoid print none printable characters signatures (ex. RS256)
+        @signature = signature
+        set_hash_and_json
+      end
       token
     end
   end
