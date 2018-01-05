@@ -1,11 +1,10 @@
-
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "jwtear/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "jwtear"
-  spec.version       = Jwtear::VERSION
+  spec.version       = JWTear::VERSION
   spec.authors       = ["KING SABRI"]
   spec.email         = ["king.sabri@gmail.com"]
 
@@ -14,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/KINGSABRI/jwtear"
   spec.license       = "MIT"
 
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.bindir        = "bin"
+  spec.executables   = ['jwtear']
   spec.require_paths = ["lib"]
 end

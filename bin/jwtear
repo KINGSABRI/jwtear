@@ -1,7 +1,6 @@
-require '../lib/jwt'
-require '../lib/jwtear/version'
+$LOAD_PATH << '.'
+require 'lib/jwtear'
 require 'optparse'
-require 'json'
 require 'pp'
 
 class String
@@ -17,7 +16,6 @@ class String
   def cursor(text, position)"\r#{position}#{text}" end
 end
 
-
 def banner
   %Q{\n  888888 888       888 88888888888
     "88b 888   o   888     888
@@ -31,6 +29,8 @@ def banner
  .d88P"
 888P"    }
 end
+
+
 
 # jwt --parse 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXUyJ9.eyJsb2dpbiI6InRlc3QxIiwiaWF0IjoiMTUxNDc1MDkxMSJ9.MjA3OGU3Yzk0MjJkZjcyMmI1YWE2ZTNlMGY1N2M4ZTEyYTIxMmJmM2M0YTg5YzEyNTI5N2M1NTU2Njk3ZmE3OA'
 # jwt --generate-token --header '{"typ":"JWT","alg":"HS256"}' --payload '{"login":"admin"}' --alg HS256 --key 'P@ssw0rd!'
@@ -51,13 +51,18 @@ option_parser.on('--payload PAYLOAD' ,
                     'JWT payload (JSON format). (required for generate-token and generate-sig)',
                     '  eg. {"login":"admin"}'
 ) {|v| options[:payload] = v}
-# option_parser.on('--alg ALGORITHM',
-#                   'Algorithm name. (required for generate-token and generate-sig)',
-#                   '  Supported algorithms: [HS256, RS512, etc]'
-# ) {|v| options[:alg] = v}
+option_parser.on('--alg ALGORITHM',
+                  # 'Algorithm name. (required for generate-token and generate-sig)',
+                  'Force algorithm type when generating a new token (ignore the one in header). (optional with generate-token)',
+                  '  Supported algorithms: [HS256, HS384, HS512, RS256, RS384, RS512, ES256, ES384, ES512]'
+) {|v| options[:alg] = v}
 option_parser.on('--key SECRET',
-                 'Secret Key for symmetric encryption. (required for generate-token and generate-sig)',
-                 '  eg. P@ssw0rd'
+                 'Secret Key for symmetric encryption. (required for generate-token and generate-sig. Accept password as a string or a file)',
+                 '  eg. P@ssw0rd  | eg. public_key.pem'
+) {|v| options[:key] = v}
+option_parser.on('--bruteforce PASSLIST',
+                 "'Bruteforce signature to get the 'Key/Password'. (required for generate-token and generate-sig)'",
+                 '  ssssssssss'
 ) {|v| options[:key] = v}
 option_parser.on('-h', '--help', 'Show this help message') {puts banner , option_parser; exit!}
 option_parser.on_tail "\nUsage:\n".underline + "  ruby #{__FILE__} <OPTIONS>"
@@ -72,17 +77,17 @@ begin
     when options[:parse]
       jwt = JWTear::JWT.new(options[:parse])
       jwt_parsed = jwt.parse
-      puts "[+] ".dark_green + "Header:".underline
-      jwt.header.each {|key, value| puts "  - #{key.bold}: #{value}"}
-      puts "[+] ".dark_green + "Payload:".underline
-      jwt.payload.each {|key, value| puts "  - #{key.bold}: #{value}"}
-      puts "[+] ".dark_green + "Signature:".underline
-      puts "#{Base64.urlsafe_encode64(jwt.signature)} # base64 encoded"
-      puts ''
-      puts "-[#{'Hash'.dark_green}]----"
+      puts "-[#{'Hash'.green}]----"
       puts jwt_parsed
-      puts "-[#{'JSON'.dark_green}]----"
+      puts "-[#{'JSON'.green}]----"
       puts jwt.json
+      puts ''
+      puts "[+] ".dark_green + "Header (envelope segment):".bold.underline
+      jwt.header.each {|key, value| puts "  #{'-'.bold} #{key}: #{value}"}
+      puts "[+] ".dark_green + "Payload (claim segment):".bold.underline
+      jwt.payload.each {|key, value| puts "  #{'-'.bold} #{key}: #{value}"}
+      puts "[+] ".dark_green + "Signature (envelope segment) - encoded:".bold.underline
+      puts "#{Base64.urlsafe_encode64(jwt.signature)}"
     when options[:generate_token] && (options[:header] || options[:payload] || options[:key]).nil?
       puts '[!] '.red + "Missing mandatory switch(es) '--header/--payload/--alg/--key'"
     when options[:generate_gen] && (options[:header] || options[:payload] || options[:key]).nil?
@@ -91,16 +96,24 @@ begin
       jwt = JWTear::JWT.new
       jwt.header  = options[:header]
       jwt.payload = options[:payload]
-      jwt.key      = options[:key]
+      jwt.alg     = options[:alg]
+      if options[:key]
+        jwt.key   = File.file?(options[:key])? File.read(options[:key]) : options[:key] # read key as a string or from file(eg. pub_key.pem)
+      end
+
       token       = jwt.generate_token
-      puts "-[#{'Token'.dark_green}]----"
-      puts token
       puts "-[#{'Hash'.dark_green}]----"
       puts jwt.hash
       puts "-[#{'JSON'.dark_green}]----"
       puts jwt.json
+      puts ''
+      puts "-[#{'Token'.green}]----"
+      puts token
     when options[:generate_gen]
       jwt = JWTear::JWT.new
+    else
+      puts banner
+      option_parser
   end
 rescue OptionParser::MissingArgument => e
   e.args.each {|arg| puts '[!] '.red + "#{e.reason.capitalize} for '#{arg}' option."}
