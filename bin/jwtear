@@ -1,5 +1,15 @@
-$LOAD_PATH << '.'
-require 'lib/jwtear'
+#!/usr/bin/env ruby
+#
+# JWTear - A command-line tool and library to parse, create and manipulate JWT tokens for security testing purposes.
+#
+lib = File.dirname(__FILE__) + '/../lib'
+if File.directory?(lib)
+  unless $:.include?(lib)
+    $:.unshift(lib)
+  end
+end
+
+require 'jwtear'
 require 'optparse'
 require 'pp'
 
@@ -60,16 +70,16 @@ option_parser.on('--key SECRET',
                  'Secret Key for symmetric encryption. (required for generate-token and generate-sig. Accept password as a string or a file)',
                  '  eg. P@ssw0rd  | eg. public_key.pem'
 ) {|v| options[:key] = v}
-option_parser.on('--bruteforce PASSLIST',
+option_parser.on( '-m MODULE', '--module MODULE',
                  "'Bruteforce signature to get the 'Key/Password'. (required for generate-token and generate-sig)'",
                  '  ssssssssss'
 ) {|v| options[:key] = v}
 option_parser.on('-h', '--help', 'Show this help message') {puts banner , option_parser; exit!}
-option_parser.on_tail "\nUsage:\n".underline + "  ruby #{__FILE__} <OPTIONS>"
+option_parser.on_tail "\nUsage:\n".underline + "jwtear <OPTIONS>"
 option_parser.on_tail "\nExample:".underline
-option_parser.on_tail %Q{ruby #{__FILE__} --generate-token --header '{"typ":"JWT","alg":"HS256"}' --payload '{"login":"admin"}' --key 'P@ssw0rd!'}
-option_parser.on_tail %Q{ruby #{__FILE__} --generate-sig --header '{"typ":"JWT","alg":"HS256"}' --payload '{"login":"admin"}' --key 'P@ssw0rd!'}
-option_parser.on_tail %Q{ruby #{__FILE__} --parse 'eyJwI...6IfJ9#{'.'.bold}kxrMS...MjAMm#{'.'.bold}zEybN...TU2Njk3ZmE3OA'\n\n}
+option_parser.on_tail %Q{jwtear --generate-token --header #{"'".bold}{"typ":"JWT","alg":"HS256"}#{"'".bold} --payload #{"'".bold}{"login":"admin"}#{"'".bold} --key 'P@ssw0rd!'}
+option_parser.on_tail %Q{jwtear --generate-sig --header #{"'".bold}{"typ":"JWT","alg":"HS256"}#{"'".bold} --payload #{"'".bold}{"login":"admin"}#{"'".bold} --key 'P@ssw0rd!'}
+option_parser.on_tail %Q{jwtear --parse #{"'".bold}eyJwI...6IfJ9#{'.'.bold}kxrMS...MjAMm#{'.'.bold}zEybN...TU2Njk3ZmE3OA#{"'".bold}\n\n}
 
 begin
   option_parser.parse!
@@ -113,7 +123,7 @@ begin
       jwt = JWTear::JWT.new
     else
       puts banner
-      option_parser
+      puts option_parser
   end
 rescue OptionParser::MissingArgument => e
   e.args.each {|arg| puts '[!] '.red + "#{e.reason.capitalize} for '#{arg}' option."}
