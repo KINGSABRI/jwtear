@@ -5,6 +5,7 @@
 
 module JWTear
   class JWT
+    include Utils
     # @!attribute [rw] token [String]
     # @!attribute [rw] header [String]
     # @!attribute [rw] payload [String]
@@ -22,7 +23,6 @@ module JWTear
     attr_reader :signature, :rsa_private, :rsa_public
 
     def initialize(token='')
-      puts "HHHHHH\n\n"
       @token = token
       @key   = nil
     end
@@ -81,7 +81,7 @@ module JWTear
           when /none/i
             ''
           else
-            raise "[x] Unsupported Algorithm: #{alg}"
+            raise "[x] Unsupported Algorithm: #{alg}".bold
         end
       rescue TypeError => e
         puts "[x] key cannot be nil or empty: Use: '--key SECRET_KEY' option"
