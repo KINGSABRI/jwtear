@@ -10,6 +10,7 @@ module  JWTear
     # @param alg [String] the algorithm you want. @example: SHA256, SHA384, SHA512
     # @param key [String]
     # @return [String] SHA signature
+    #
     def sha(data, alg, key)
       raise AlgorithmRequiresKeyError if key.nil?
       digit = /[[:digit:]]+/
@@ -21,6 +22,7 @@ module  JWTear
     # @param data [String] the data you want to encrypt or make signature for.
     # @param alg [String] the algorithm you want. @example: RSA256, RSA384, RSA512
     # @return [Hash] of public_key, private_key and signature
+    #
     def rsa(data, alg)
       rsa_private = OpenSSL::PKey::RSA.generate(2048)
       rsa_public  = @rsa_private.public_key
@@ -34,9 +36,11 @@ module  JWTear
     end
 
     # ecdsa generates ESDSA signature
+    #
     # @param data [String]
     # @param alg [String]
     # @return [String] of ESDSA signature
+    #
     def ecdsa(data, alg)
       # TODO:
       #   - fixme
@@ -52,9 +56,13 @@ module  JWTear
       ''
     end
 
-    # just a soft message for unsupported algorithms
-    def unsupported_algorithm(alg)
-      "Unsupported Algorithm: #{alg}"
+    # List of supported algorithms
+    def supported_algorithms
+      {
+          SHA:   %w{HS256 HS384 HS512},
+          RSA:   %w{RS256 RS384 RS512},
+          ESDSA: %w{ES256 ES384 ES512}
+      }
     end
 
   end
