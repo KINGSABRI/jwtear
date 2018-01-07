@@ -6,13 +6,15 @@ require 'openssl'
 
 # JWTear
 require_relative 'jwtear/version'
-require_relative 'jwtear/error'
+require_relative 'jwtear/errors'
 require_relative 'jwtear/extensions'
-# require_relative 'jwtear/utils'
 require_relative 'jwtear/jwt'
+require_relative 'jwtear/utils'
 
 
 module  JWTear
+  include JWTear::Utils
+
   String.class_eval do
     include Extensions::Core::String
   end
@@ -20,7 +22,3 @@ module  JWTear
   #   include Extensions::Core::NilClass
   # end
 end
-
-
-# $LOAD_PATH << '../modules'
-# require_relative '../'

@@ -2,29 +2,19 @@
 #
 # JWTear - A command-line tool and library to parse, create and manipulate JWT tokens for security testing purposes.
 #
+# @Author: KING SABRI - @KINGSABRI
+#
 lib = File.dirname(__FILE__) + '/../lib'
+mod = File.dirname(__FILE__) + '/../modules'
 if File.directory?(lib)
   unless $:.include?(lib)
     $:.unshift(lib)
+    $:.unshift(mod)
   end
 end
 
 require 'jwtear'
 require 'optparse'
-require 'pp'
-
-class String
-  def bold; colorize(self, "\e[1m"); end
-  def red; colorize(self, "\e[1m\e[31m"); end
-  def green; colorize(self, "\e[1m\e[32m"); end
-  def dark_green; colorize(self, "\e[32m"); end
-  def reset; colorize(self, "\e[0m\e[28m"); end
-  def underline; colorize(self, "\e[4m"); end
-  def colorize(text, color_code) "#{color_code}#{text}\e[0m" end
-  def mv_down(n=1) cursor(self, "\033[#{n}B") end
-  def cls_upline; cursor(self, "\e[K") end
-  def cursor(text, position)"\r#{position}#{text}" end
-end
 
 def banner
   %Q{\n  888888 888       888 88888888888
@@ -39,7 +29,6 @@ def banner
  .d88P"
 888P"    }
 end
-
 
 
 # jwt --parse 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXUyJ9.eyJsb2dpbiI6InRlc3QxIiwiaWF0IjoiMTUxNDc1MDkxMSJ9.MjA3OGU3Yzk0MjJkZjcyMmI1YWE2ZTNlMGY1N2M4ZTEyYTIxMmJmM2M0YTg5YzEyNTI5N2M1NTU2Njk3ZmE3OA'
@@ -71,18 +60,19 @@ option_parser.on('--key SECRET',
                  '  eg. P@ssw0rd  | eg. public_key.pem'
 ) {|v| options[:key] = v}
 option_parser.on( '-m MODULE', '--module MODULE',
-                 "'Bruteforce signature to get the 'Key/Password'. (required for generate-token and generate-sig)'",
-                 '  ssssssssss'
+                 "Use module - WIP",
+                 "Use it without argument to list all modules with its usage"
 ) {|v| options[:key] = v}
 option_parser.on('-h', '--help', 'Show this help message') {puts banner , option_parser; exit!}
 option_parser.on_tail "\nUsage:\n".underline + "jwtear <OPTIONS>"
 option_parser.on_tail "\nExample:".underline
-option_parser.on_tail %Q{jwtear --generate-token --header #{"'".bold}{"typ":"JWT","alg":"HS256"}#{"'".bold} --payload #{"'".bold}{"login":"admin"}#{"'".bold} --key 'P@ssw0rd!'}
+option_parser.on_tail %Q{jwtear --generate-token --header #{"'".bold}{"typ":"JWT","alg":" "}#{"'".bold} --payload #{"'".bold}{"login":"admin"}#{"'".bold} --key 'P@ssw0rd!'}
 option_parser.on_tail %Q{jwtear --generate-sig --header #{"'".bold}{"typ":"JWT","alg":"HS256"}#{"'".bold} --payload #{"'".bold}{"login":"admin"}#{"'".bold} --key 'P@ssw0rd!'}
 option_parser.on_tail %Q{jwtear --parse #{"'".bold}eyJwI...6IfJ9#{'.'.bold}kxrMS...MjAMm#{'.'.bold}zEybN...TU2Njk3ZmE3OA#{"'".bold}\n\n}
 
 begin
   option_parser.parse!
+  include JWTear::Utils
   case
     when options[:parse]
       jwt = JWTear::JWT.new(options[:parse])
@@ -119,8 +109,11 @@ begin
       puts ''
       puts "-[#{'Token'.green}]----"
       puts token
-    when options[:generate_gen]
+    when options[:generate_sig]
       jwt = JWTear::JWT.new
+      data_encoded = encode_header_payload(options[:header], options[:payload])
+      puts "-[#{'Signature'.green}]----"
+      puts encode(jwt.generate_sig(data_encoded, options[:alg], options[:key]).signature)
     else
       puts banner
       puts option_parser
