@@ -2,13 +2,17 @@ module  JWTear
 
   # Algorithms module contains all algorithms that are supported for this lib
   # @Note if you are looking for production library, please use jwt gem
+  #
   module Algorithms
 
     # sha generates SHA signature
     #
-    # @param data [String] the data you want to encrypt or make signature for.
-    # @param alg [String] the algorithm you want. @example: SHA256, SHA384, SHA512
+    # @param data [String]
+    #   the data you want to encrypt or make signature for.
+    # @param alg [String]
+    #   the algorithm you want. @example: SHA256, SHA384, SHA512
     # @param key [String]
+    #
     # @return [String] SHA signature
     #
     def sha(data, alg, key)
@@ -19,9 +23,12 @@ module  JWTear
 
     # rsa generates RSA signature
     #
-    # @param data [String] the data you want to encrypt or make signature for.
-    # @param alg [String] the algorithm you want. @example: RSA256, RSA384, RSA512
-    # @return [Hash] of public_key, private_key and signature
+    # @param data [String]
+    #   the data you want to encrypt or make signature for.
+    # @param alg [String]
+    #   the algorithm you want. @example: RSA256, RSA384, RSA512
+    # @return [Hash]
+    #   of public_key, private_key and signature
     #
     def rsa(data, alg)
       rsa_private = OpenSSL::PKey::RSA.generate(2048)
@@ -51,12 +58,16 @@ module  JWTear
       ecdsa_public.private_key = nil
     end
 
-    # @return [String] empty string if none algorithm, yes it happens in JWT
+    # @return [String]
+    #   empty string if none algorithm, yes it happens in JWT
     def none
       ''
     end
 
     # List of supported algorithms
+    #
+    # @return [Hash]
+    #
     def supported_algorithms
       {
           SHA:   %w{HS256 HS384 HS512},

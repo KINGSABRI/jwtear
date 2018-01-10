@@ -16,6 +16,7 @@ end
 require 'jwtear'
 require 'optparse'
 
+
 def banner
   %Q{\n  888888 888       888 88888888888
     "88b 888   o   888     888
@@ -31,101 +32,240 @@ def banner
 end
 
 
+
+
+
+
+
+include GLI::App
+program_desc "#{"JWTear".bold} - Parse, create and manipulate JWT tokens."
+
+desc 'Parse JWT token.'
+default_value nil
+arg_name 'JWT_TOKEN'
+flag [:p,:parse]
+
+desc 'Generate JWT token.'
+default_value nil
+arg_name 'JWT_TOKEN'
+flag [:T, :generate_token]
+
+desc 'Generate JWT signature.'
+default_value nil
+arg_name 'JWT_TOKEN'
+flag [:S, :generate_sig]
+
+# accept JSON
+# # flag :header, type: JSON
+desc 'JWT header (JSON format). required for generate-token and generate-sig'
+default_value nil
+arg_name 'HEADER'
+flag [:H, :header]
+
+desc 'JWT payload (JSON format). required for generate-token and generate-sig'
+default_value nil
+arg_name 'PAYLOAD'
+flag [:P, :payload]
+
+desc 'Use module to do more action'
+default_value nil
+arg_name 'MODULE'
+flag [:M, :module] do |mmm|
+  command :SSS do |c|
+    c.desc 'SSSSSSSSSSSSSSSS'
+    mmm.switch :s
+  end
+end
+
+desc 'Describe add here'
+arg_name 'Describe arguments to add here'
+command :add do |c|
+  c.action do |global_options,options,args|
+    puts "add command ran"
+  end
+end
+
+desc "manage remotes"
+command :remote do |c|
+  c.desc "adds a remote repo to your local config"
+  c.command :add do |add|
+    add.action do |global_options,options,args|
+      puts 'FFFFFFFFFFFFFF'
+    end
+  end
+end
+
+
+
+# desc "adds a remote repo to your local config"
+# command :list do |c|
+#   c.action do |global_options,options,args|
+#     puts "[+] ".dark_green + "Module list:".underline
+#
+#     # list all modules
+#     modules = JWTear::JWTModules.list_modules
+#     modules.each do |_module|
+#       puts "#{_module.description[:name].downcase} \t #{_module.description[:banner]}"
+#     end
+#
+#     # the_module =
+#     #     modules.select do |m|
+#     #       m.description[:name].downcase == options[:module][0].downcase
+#     #     end
+#   end
+# end
+
+
+
+
+exit run(ARGV)
+
+
+
+
+
+
+
 # jwt --parse 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXUyJ9.eyJsb2dpbiI6InRlc3QxIiwiaWF0IjoiMTUxNDc1MDkxMSJ9.MjA3OGU3Yzk0MjJkZjcyMmI1YWE2ZTNlMGY1N2M4ZTEyYTIxMmJmM2M0YTg5YzEyNTI5N2M1NTU2Njk3ZmE3OA'
 # jwt --generate-token --header '{"typ":"JWT","alg":"HS256"}' --payload '{"login":"admin"}' --alg HS256 --key 'P@ssw0rd!'
 # jwt --generate-sig  --header '{"typ":"JWT","alg":"HS256"}' --payload '{"login":"admin"}' --alg HS256 --key 'P@ssw0rd!'
-options = {}
-option_parser = OptionParser.new
-option_parser.banner = "#{"JWTear".bold} - Parse, create and manipulate JWT tokens."
-option_parser.set_summary_indent '   '
-option_parser.separator "\nHelp menu:".underline
-option_parser.on('-p', '--parse JWT_TOKEN' , 'Parse JWT token') {|v| options[:parse] = v}
-option_parser.on('--generate-token', 'Generate JWT token.') {|v| options[:generate_token] = v}
-option_parser.on('--generate-sig', 'Generate JWT signature.') {|v| options[:generate_sig] = v}
-option_parser.on('--header HEADER',
-                  'JWT header (JSON format). (required for generate-token and generate-sig)',
-                  '  eg. {"typ":"JWT","alg":"HS256"} | Supported algorithms: [HS256, RS512, etc]'
-) {|v| options[:header] = v}
-option_parser.on('--payload PAYLOAD' ,
-                    'JWT payload (JSON format). (required for generate-token and generate-sig)',
-                    '  eg. {"login":"admin"}'
-) {|v| options[:payload] = v}
-option_parser.on('--alg ALGORITHM',
-                  # 'Algorithm name. (required for generate-token and generate-sig)',
-                  'Force algorithm type when generating a new token (ignore the one in header). (optional with generate-token)',
-                  '  Supported algorithms: [HS256, HS384, HS512, RS256, RS384, RS512, ES256, ES384, ES512]'
-) {|v| options[:alg] = v}
-option_parser.on('--key SECRET',
-                 'Secret Key for symmetric encryption. (required for generate-token and generate-sig. Accept password as a string or a file)',
-                 '  eg. P@ssw0rd  | eg. public_key.pem'
-) {|v| options[:key] = v}
-option_parser.on( '-m MODULE', '--module MODULE',
-                 "Use module - WIP",
-                 "Use it without argument to list all modules with its usage"
-) {|v| options[:key] = v}
-option_parser.on('-h', '--help', 'Show this help message') {puts banner , option_parser; exit!}
-option_parser.on_tail "\nUsage:\n".underline + "jwtear <OPTIONS>"
-option_parser.on_tail "\nExample:".underline
-option_parser.on_tail %Q{jwtear --generate-token --header #{"'".bold}{"typ":"JWT","alg":" "}#{"'".bold} --payload #{"'".bold}{"login":"admin"}#{"'".bold} --key 'P@ssw0rd!'}
-option_parser.on_tail %Q{jwtear --generate-sig --header #{"'".bold}{"typ":"JWT","alg":"HS256"}#{"'".bold} --payload #{"'".bold}{"login":"admin"}#{"'".bold} --key 'P@ssw0rd!'}
-option_parser.on_tail %Q{jwtear --parse #{"'".bold}eyJwI...6IfJ9#{'.'.bold}kxrMS...MjAMm#{'.'.bold}zEybN...TU2Njk3ZmE3OA#{"'".bold}\n\n}
-
-begin
-  option_parser.parse!
-  include JWTear::Utils
-  case
-    when options[:parse]
-      jwt = JWTear::JWT.new(options[:parse])
-      jwt_parsed = jwt.parse
-      puts "-[#{'Hash'.green}]----"
-      puts jwt_parsed
-      puts "-[#{'JSON'.green}]----"
-      puts jwt.json
-      puts ''
-      puts "[+] ".dark_green + "Header (envelope segment):".bold.underline
-      jwt.header.each {|key, value| puts "  #{'-'.bold} #{key}: #{value}"}
-      puts "[+] ".dark_green + "Payload (claim segment):".bold.underline
-      jwt.payload.each {|key, value| puts "  #{'-'.bold} #{key}: #{value}"}
-      puts "[+] ".dark_green + "Signature (envelope segment) - encoded:".bold.underline
-      puts "#{Base64.urlsafe_encode64(jwt.signature)}"
-    when options[:generate_token] && (options[:header] || options[:payload] || options[:key]).nil?
-      puts '[!] '.red + "Missing mandatory switch(es) '--header/--payload/--alg/--key'"
-    when options[:generate_gen] && (options[:header] || options[:payload] || options[:key]).nil?
-      puts '[!] '.red + "Missing mandatory switch(es) '--header/--payload/--key'"
-    when options[:generate_token]
-      jwt = JWTear::JWT.new
-      jwt.header  = options[:header]
-      jwt.payload = options[:payload]
-      jwt.alg     = options[:alg]
-      if options[:key]
-        jwt.key   = File.file?(options[:key])? File.read(options[:key]) : options[:key] # read key as a string or from file(eg. pub_key.pem)
-      end
-
-      token       = jwt.generate_token
-      puts "-[#{'Hash'.dark_green}]----"
-      puts jwt.hash
-      puts "-[#{'JSON'.dark_green}]----"
-      puts jwt.json
-      puts ''
-      puts "-[#{'Token'.green}]----"
-      puts token
-    when options[:generate_sig]
-      jwt = JWTear::JWT.new
-      data_encoded = encode_header_payload(options[:header], options[:payload])
-      puts "-[#{'Signature'.green}]----"
-      puts encode(jwt.generate_sig(data_encoded, options[:alg], options[:key]).signature)
-    else
-      puts banner
-      puts option_parser
-  end
-rescue OptionParser::MissingArgument => e
-  e.args.each {|arg| puts '[!] '.red + "#{e.reason.capitalize} for '#{arg}' option."}
-  puts option_parser
-rescue OptionParser::InvalidOption => e
-  puts '[!] '.red + "#{e}"
-  puts option_parser
-rescue Exception => e
-  puts e.backtrace
-  puts e.backtrace_locations
-  puts e
-end
+#
+#
+#
+# options = {}
+# option_parser = OptionParser.new
+# option_parser.banner = "#{"JWTear".bold} - Parse, create and manipulate JWT tokens."
+# option_parser.set_summary_indent '   '
+# option_parser.separator "\nHelp menu:".underline
+#
+# option_parser.on('-p', '--parse JWT_TOKEN' , 'Parse JWT token') {|v| options[:parse] = v}
+#
+# option_parser.on('--generate-token', 'Generate JWT token.') {|v| options[:generate_token] = v}
+#
+# option_parser.on('--generate-sig', 'Generate JWT signature.') {|v| options[:generate_sig] = v}
+#
+# option_parser.on('--header HEADER',
+#                   'JWT header (JSON format). (required for generate-token and generate-sig)',
+#                   '  eg. {"typ":"JWT","alg":"HS256"} | Supported algorithms: [HS256, RS512, etc]'
+# ) {|v| options[:header] = v}
+#
+# option_parser.on('--payload PAYLOAD' ,
+#                     'JWT payload (JSON format). (required for generate-token and generate-sig)',
+#                     '  eg. {"login":"admin"}'
+# ) {|v| options[:payload] = v}
+#
+# option_parser.on('--alg ALGORITHM',
+#                   # 'Algorithm name. (required for generate-token and generate-sig)',
+#                   'Force algorithm type when generating a new token (ignore the one in header). (optional with generate-token)',
+#                   '  Supported algorithms: [HS256, HS384, HS512, RS256, RS384, RS512, ES256, ES384, ES512]'
+# ) {|v| options[:alg] = v}
+#
+# option_parser.on('--key SECRET',
+#                  'Secret Key for symmetric encryption. (required for generate-token and generate-sig. Accept password as a string or a file)',
+#                  '  eg. P@ssw0rd  | eg. public_key.pem'
+# ) {|v| options[:key] = v}
+#
+# option_parser.on('-m', '--module',
+#                  "Use module - WIP",
+#                  "Use it without argument to list all modules with its usage") do |v|
+#   options[:module] = v
+# end
+#
+# option_parser.on('-h', '--help', 'Show this help message') {puts banner , option_parser; exit!}
+# option_parser.on_tail "\nUsage:\n".underline + "jwtear <OPTIONS>"
+# option_parser.on_tail "\nExample:".underline
+# option_parser.on_tail %Q{jwtear --generate-token --header #{"'".bold}{"typ":"JWT","alg":" "}#{"'".bold} --payload #{"'".bold}{"login":"admin"}#{"'".bold} --key 'P@ssw0rd!'}
+# option_parser.on_tail %Q{jwtear --generate-sig --header #{"'".bold}{"typ":"JWT","alg":"HS256"}#{"'".bold} --payload #{"'".bold}{"login":"admin"}#{"'".bold} --key 'P@ssw0rd!'}
+# option_parser.on_tail %Q{jwtear --parse #{"'".bold}eyJwI...6IfJ9#{'.'.bold}kxrMS...MjAMm#{'.'.bold}zEybN...TU2Njk3ZmE3OA#{"'".bold}\n\n}
+#
+# begin
+#   option_parser.parse!
+#   # option_parser.order!
+#   include JWTear::Utils
+#   case
+#     # when options[:module].nil?
+#     #   puts "[+] ".dark_green + "List of modules:".bold.underline
+#     #   JWTear::JWTModules.list_modules.each do |_module|
+#     #     puts "#{_module.description[:name]} \t #{_module.description[:banner]}"
+#     #   end
+#
+#     when options[:parse]
+#       jwt = JWTear::JWT.new(options[:parse])
+#       jwt_parsed = jwt.parse
+#       puts "-[#{'Hash'.green}]----"
+#       puts jwt_parsed
+#       puts "-[#{'JSON'.green}]----"
+#       puts jwt.json
+#       puts ''
+#       puts "[+] ".dark_green + "Header (envelope segment):".bold.underline
+#       jwt.header.each {|key, value| puts "  #{'-'.bold} #{key}: #{value}"}
+#       puts "[+] ".dark_green + "Payload (claim segment):".bold.underline
+#       jwt.payload.each {|key, value| puts "  #{'-'.bold} #{key}: #{value}"}
+#       puts "[+] ".dark_green + "Signature (envelope segment) - encoded:".bold.underline
+#       puts "#{Base64.urlsafe_encode64(jwt.signature)}"
+#     when options[:generate_token] && (options[:header] || options[:payload] || options[:key]).nil?
+#       puts '[!] '.red + "Missing mandatory switch(es) '--header/--payload/--alg/--key'"
+#     when options[:generate_gen] && (options[:header] || options[:payload] || options[:key]).nil?
+#       puts '[!] '.red + "Missing mandatory switch(es) '--header/--payload/--key'"
+#     when options[:generate_token]
+#       jwt = JWTear::JWT.new
+#       jwt.header  = options[:header]
+#       jwt.payload = options[:payload]
+#       jwt.alg     = options[:alg]
+#       if options[:key]
+#         jwt.key   = File.file?(options[:key])? File.read(options[:key]) : options[:key] # read key as a string or from file(eg. pub_key.pem)
+#       end
+#       token       = jwt.generate_token
+#       puts "-[#{'Hash'.dark_green}]----"
+#       puts jwt.hash
+#       puts "-[#{'JSON'.dark_green}]----"
+#       puts jwt.json
+#       puts ''
+#       puts "-[#{'Token'.green}]----"
+#       puts token
+#     when options[:generate_sig]
+#       jwt = JWTear::JWT.new
+#       data_encoded = encode_header_payload(options[:header], options[:payload])
+#       puts "-[#{'Signature'.green}]----"
+#       puts encode(jwt.generate_sig(data_encoded, options[:alg], options[:key]).signature)
+#     when options[:module]
+#       # create a new option parser for module
+#       options[:module] = ARGV
+#       # list all modules
+#       modules = JWTear::JWTModules.list_modules
+#       # get selected module
+#       the_module =
+#           modules.select do |m|
+#             m.description[:name].downcase == options[:module][0].downcase
+#           end unless options[:module][0].nil?
+#
+#       case
+#         when options[:module].nil?
+#           puts "[+] ".dark_green + "Module list:".underline
+#           modules.each do |_module|
+#             puts "#{_module.description[:name].downcase} \t #{_module.description[:banner]}"
+#           end
+#         when !the_module.empty? && !the_module.nil?
+#           mod_obj = the_module[0].new
+#           p mod_obj
+#           p mod_obj.option_parser
+#         else
+#           puts '[!] '.yellow + "Unknown Module: #{options[:module]}"
+#           p modules.select{|m| m.description[:name].downcase == options[:module]}
+#       end
+#
+#
+#
+#     else
+#       puts banner
+#       puts option_parser
+#   end
+# rescue OptionParser::MissingArgument => e
+#   e.args.each {|arg| puts '[!] '.red + "#{e.reason.capitalize} for '#{arg}' option."}
+# rescue OptionParser::InvalidOption => e
+#   puts '[!] '.red + "#{e.reason.capitalize}: #{e.args.join(', ')}"
+# rescue Exception => e
+#   puts e.backtrace
+#   puts e.backtrace_locations
+#   puts e
+# end

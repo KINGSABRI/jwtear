@@ -1,4 +1,5 @@
 module JWTear
+  # Module Extensions contains all monkey patches
   module Extensions
     module Core
       module String
