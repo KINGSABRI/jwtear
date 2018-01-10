@@ -7,20 +7,20 @@ module JWTear
     include JWTear::Algorithms
     include JWTear::Utils
 
-    # @!attribute [rw] token [String]
-    # @!attribute [rw] header [String]
-    # @!attribute [rw] payload [String]
+    # @!attribute [rw] token [String] generated or parsed token
+    # @!attribute [rw] header [String] generated or parsed header
+    # @!attribute [rw] payload [String] generated or parsed payload
     attr_accessor :token, :header, :payload
-    # @!attribute [rw] alg [String]
-    # @!attribute [rw] key [String]
-    # @!attribute [rw] data [String]
+    # @!attribute [rw] alg [String] generated or parsed algorithm
+    # @!attribute [rw] key [String] given encryption key
+    # @!attribute [rw] data [String] given or parsed data
     attr_accessor :alg, :key, :data
-    # @!attribute [r] json [JSON]
-    # @!attribute [r] hash [Hash]
+    # @!attribute [r] json [JSON] given or parsed json
+    # @!attribute [r] hash [Hash] hash result of parsing given or generated json
     attr_reader :json, :hash
-    # @!attribute [r] signature [String]
-    # @!attribute [r] rsa_private [String]
-    # @!attribute [r] rsa_public [String]
+    # @!attribute [r] signature [String] generated or parsed signature
+    # @!attribute [r] rsa_private [String] generated private private key
+    # @!attribute [r] rsa_public [String] generated or given public key
     attr_reader :signature, :rsa_private, :rsa_public
 
     def initialize(token='')
@@ -52,6 +52,9 @@ module JWTear
     # @param data [String]. 'Base64.encode(header)'.'Base64.encode(payload)'>
     # @param alg [String] supported algorithms: HS256 HS384, HS512, RS256, RS384, RS512, ES256, ES384, ES512
     # @param key String
+    #
+    # @return [String] the generate signature
+    #
     def generate_sig(data, alg, key)
       begin
         case alg
@@ -70,17 +73,18 @@ module JWTear
             raise AlgorithmUnknownError
         end
       rescue AlgorithmUnknownError
-        puts "[x] ".red.bold + "algorithm cannot be nil, empty or unsupported, Use: '--alg ALGORITHM' option"
+        puts "[x] ".red + "algorithm cannot be nil, empty or unsupported, Use: '--alg ALGORITHM' option"
         puts "[!] ".yellow   + 'Supported Algorithms:'
         supported_algorithms.each_pair do |alg_key, alg_val|
           puts alg_key, alg_val.map{|_alg| "  #{_alg}" }
         end
         exit!
       rescue AlgorithmRequiresKeyError
-        puts "[x] ".red.bold + "key cannot be nil or empty, Use: '--key SECRET_KEY' option"
+        puts "[x] ".red + "key cannot be nil or empty, Use: '--key SECRET_KEY' option"
         exit!
       rescue Exception => e
-        puts "[x] ".red.bold + "Unknown Exception: generate_sig"
+        puts "[x] ".red + "Unknown Exception: generate_sig"
+        puts '[!] '.yellow + 'Please report the issue at: https://github.com/KINGSABRI/jwtear/issues'.underline
         puts e
         puts e.backtrace
       end
@@ -91,6 +95,9 @@ module JWTear
     # generate JWT token
     #   by default, generate_token uses the given json header to detect the algorithm. But it also accept to ignore than
     #   and force it to you another algorithm.
+    #
+    # @return [String] the generated token
+    #
     def generate_token
       @header    =  JSON.parse(@header)  unless @header.is_a?(Hash)
       @payload   =  JSON.parse(@payload) unless @payload.is_a?(Hash)
