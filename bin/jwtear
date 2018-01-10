@@ -59,10 +59,10 @@ option_parser.on('--key SECRET',
                  'Secret Key for symmetric encryption. (required for generate-token and generate-sig. Accept password as a string or a file)',
                  '  eg. P@ssw0rd  | eg. public_key.pem'
 ) {|v| options[:key] = v}
-option_parser.on( '-m MODULE', '--module MODULE',
-                 "Use module - WIP",
-                 "Use it without argument to list all modules with its usage"
-) {|v| options[:key] = v}
+# option_parser.on( '-m MODULE', '--module MODULE',
+#                  "Use module - WIP",
+#                  "Use it without argument to list all modules with its usage"
+# ) {|v| options[:key] = v}
 option_parser.on('-h', '--help', 'Show this help message') {puts banner , option_parser; exit!}
 option_parser.on_tail "\nUsage:\n".underline + "jwtear <OPTIONS>"
 option_parser.on_tail "\nExample:".underline
