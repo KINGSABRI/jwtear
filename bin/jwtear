@@ -69,10 +69,11 @@ begin
       jwt.payload.each {|key, value| puts "  #{'-'.bold} #{key}: #{value}"}
       puts "[+] ".dark_green + "Signature (envelope segment) - encoded:".bold.underline
       puts "#{Base64.urlsafe_encode64(jwt.signature)}"
+
     when options[:generate_token] && (options[:header] || options[:payload] || options[:key]).nil?
       puts '[!] '.red + "Missing mandatory switch(es) '--header/--payload/--alg/--key'"
 
-    when options[:generate_gen] && (options[:header] || options[:payload] || options[:key]).nil?
+    when options[:generate_sig] && (options[:header] || options[:payload] || options[:key]).nil?
       puts '[!] '.red + "Missing mandatory switch(es) '--header/--payload/--key'"
 
     when options[:generate_token]
