@@ -1,6 +1,17 @@
 module JWTear
   module Utils
 
+    # check token format 
+    def is_token?(token)
+      begin
+        token_size = token.split('.').size
+        raise InvalidTokenError if token_size < 2
+      rescue InvalidTokenError
+        puts '[!] '.red + "Invalid token: #{token}"
+        exit!
+      end
+    end
+    
     def encode(data)
       Base64.urlsafe_encode64(data, padding: false)
     end
@@ -9,9 +20,9 @@ module JWTear
       Base64.urlsafe_decode64(data)
     end
 
-    def encode_header_payload(header, payload)
-      [header, payload].map {|part| encode part}.join('.')
-    end
+    # def encode_header_payload_signature(header, payload, signature)
+    #   [header, payload, signature].map {|part| encode part}.join('.')
+    # end
 
     # JWTear's logo
     def self.banner
