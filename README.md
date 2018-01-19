@@ -45,7 +45,7 @@ Usage:
 jwtear <OPTIONS>
 
 Example:
-jwtear --generate-token --header '{"typ":"JWT","alg":" "}' --payload '{"login":"admin"}' --key 'P@ssw0rd!'
+jwtear --generate-token --header '{"typ":"JWT","alg":"HS256"}' --payload '{"login":"admin"}' --key 'P@ssw0rd!'
 jwtear --generate-sig --header '{"typ":"JWT","alg":"HS256"}' --payload '{"login":"admin"}' --key 'P@ssw0rd!'
 jwtear --parse 'eyJwI...6IfJ9.kxrMS...MjAMm.zEybN...TU2Njk3ZmE3OA'
 
