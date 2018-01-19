@@ -22,21 +22,21 @@ option_parser.banner = "#{"JWTear".bold} - Parse, create and manipulate JWT toke
 option_parser.set_summary_indent '   '
 option_parser.separator "\nHelp menu:".underline
 option_parser.on('-p', '--parse JWT_TOKEN' , 'Parse JWT token') {|v| options[:parse] = v}
-option_parser.on('--generate-token', 'Generate JWT token.') {|v| options[:generate_token] = v}
-option_parser.on('--generate-sig', 'Generate JWT signature.') {|v| options[:generate_sig] = v}
-option_parser.on('--header HEADER',
+option_parser.on('-t', '--generate-token', 'Generate JWT token.') {|v| options[:generate_token] = v}
+option_parser.on('-s', '--generate-sig', 'Generate JWT signature.') {|v| options[:generate_sig] = v}
+option_parser.on('-H', '--header HEADER',
                   'JWT header (JSON format). (required for generate-token and generate-sig)',
                   '  eg. {"typ":"JWT","alg":"HS256"} | Supported algorithms: [HS256, RS512, etc]'
 ) {|v| options[:header] = v}
-option_parser.on('--payload PAYLOAD' ,
+option_parser.on('-P', '--payload PAYLOAD' ,
                     'JWT payload (JSON format). (required for generate-token and generate-sig)',
                     '  eg. {"login":"admin"}'
 ) {|v| options[:payload] = v}
-option_parser.on('--alg ALGORITHM',
+option_parser.on('-g', '--alg ALGORITHM',
                   'Force algorithm type when generating a new token (ignore the one in header). (optional with generate-token)',
                   '  Supported algorithms: [HS256, HS384, HS512, RS256, RS384, RS512, ES256, ES384, ES512]'
 ) {|v| options[:alg] = v}
-option_parser.on('--key SECRET',
+option_parser.on('-k', '--key SECRET',
                  'Secret Key for symmetric encryption. (required for generate-token and generate-sig. Accept password as a string or a file)',
                  '  eg. P@ssw0rd  | eg. public_key.pem'
 ) {|v| options[:key] = v}
