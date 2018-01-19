@@ -47,7 +47,7 @@ option_parser.on('--key SECRET',
 option_parser.on('-h', '--help', 'Show this help message') {puts JWTear::Utils.banner , option_parser; exit!}
 option_parser.on_tail "\nUsage:\n".underline + "jwtear <OPTIONS>"
 option_parser.on_tail "\nExample:".underline
-option_parser.on_tail %Q{jwtear --generate-token --header #{"'".bold}{"typ":"JWT","alg":" "}#{"'".bold} --payload #{"'".bold}{"login":"admin"}#{"'".bold} --key 'P@ssw0rd!'}
+option_parser.on_tail %Q{jwtear --generate-token --header #{"'".bold}{"typ":"JWT","alg":"HS256"}#{"'".bold} --payload #{"'".bold}{"login":"admin"}#{"'".bold} --key 'P@ssw0rd!'}
 option_parser.on_tail %Q{jwtear --generate-sig --header #{"'".bold}{"typ":"JWT","alg":"HS256"}#{"'".bold} --payload #{"'".bold}{"login":"admin"}#{"'".bold} --key 'P@ssw0rd!'}
 option_parser.on_tail %Q{jwtear --parse #{"'".bold}eyJwI...6IfJ9#{'.'.bold}kxrMS...MjAMm#{'.'.bold}zEybN...TU2Njk3ZmE3OA#{"'".bold}\n\n}
 
@@ -55,6 +55,7 @@ begin
   option_parser.parse!
   include JWTear::Utils
   case
+    # parse
     when options[:parse]
       jwt = JWTear::JWT.new(options[:parse])
       jwt_parsed = jwt.parse
@@ -70,9 +71,11 @@ begin
       puts "[+] ".dark_green + "Signature (envelope segment) - encoded:".bold.underline
       puts "#{Base64.urlsafe_encode64(jwt.signature)}"
 
+    # checking missing for generate_token
     when options[:generate_token] && (options[:header] || options[:payload] || options[:key]).nil?
       puts '[!] '.red + "Missing mandatory switch(es) '--header/--payload/--alg/--key'"
 
+    # checking missing for generate_sig
     when options[:generate_sig] && (options[:header] || options[:payload] || options[:key]).nil?
       puts '[!] '.red + "Missing mandatory switch(es) '--header/--payload/--key'"
 
@@ -112,7 +115,6 @@ rescue OptionParser::InvalidOption => e
 rescue Exception => e
   puts "[x] ".red + "Unknown Exception: option parser"
   puts '[!] '.yellow + 'Please report the issue at: https://github.com/KINGSABRI/jwtear/issues'.underline
-  puts e.backtrace
   puts e.backtrace_locations
   puts e
 end
