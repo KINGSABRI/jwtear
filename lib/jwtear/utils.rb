@@ -1,7 +1,7 @@
 module JWTear
   module Utils
 
-    # check token format 
+    # check token format
     def is_token?(token)
       begin
         token_size = token.split('.').size
