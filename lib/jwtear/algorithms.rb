@@ -72,6 +72,7 @@ module  JWTear
     #
     def supported_algorithms
       {
+          None:  [],
           SHA:   %w{HS256 HS384 HS512},
           RSA:   %w{RS256 RS384 RS512},
           ESDSA: %w{ES256 ES384 ES512}
