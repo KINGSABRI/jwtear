@@ -36,7 +36,7 @@ module JWTear
       is_token?(token)
       _token = token.split('.')
       @header     = JSON.parse(decode(_token[0]))
-      @type, @alg = @header['type'], @header['alg']
+      @type, @alg = @header['typ'], @header['alg']
       @payload    = JSON.parse(decode(_token[1]))
       @signature  = decode(_token[2]) unless (_token[2].nil? or _token[2].empty?)
       set_hash_and_json
@@ -100,20 +100,29 @@ module JWTear
     # @return [String] the generated token
     #
     def generate_token
+      begin
+        @header   = JSON.parse(@header)  unless @header.is_a?(Hash)
+        @payload  = JSON.parse(@payload) unless @payload.is_a?(Hash)
+        @alg      = @header['alg'] if @alg.nil?   # if algorithm not forced, take if from the header
 
-      @header   = JSON.parse(@header)  unless @header.is_a?(Hash)
-      @payload  = JSON.parse(@payload) unless @payload.is_a?(Hash)
-      @alg      = @header['alg'] if @alg.nil?   # if algorithm not forced, take if from the header
+        header_encoded    = encode(@header.to_json)
+        payload_encoded   = encode(@payload.to_json)
+        data              = "#{header_encoded}.#{payload_encoded}"
+        signature_encoded = encode(generate_sig(data, @alg, @key).signature)
+        token     = [header_encoded, payload_encoded, signature_encoded].join('.')
 
-      header_encoded    = encode(@header.to_json)
-      payload_encoded   = encode(@payload.to_json)
-      data              = "#{header_encoded}.#{payload_encoded}"
-      signature_encoded = encode(generate_sig(data, @alg, @key).signature)
-      token     = [header_encoded, payload_encoded, signature_encoded].join('.')
-
-      set_hash_and_json
-
-      token
+        set_hash_and_json
+        token
+      rescue JSON::ParserError => e
+        puts '[x] '.red + "Invalid JSON: #{e.message}"
+        puts "[!] ".yellow + "Make sure you've single quoted your input: eg. --header #{"'".bold}{\"type\":\"JWT\",\"alg\":\"HS256\"}#{"'".bold}"
+        exit!
+      rescue Exception => e
+        puts "[x] ".red + "Unknown Exception: generate_sig"
+        puts '[!] '.yellow + 'Please report the issue at: https://github.com/KINGSABRI/jwtear/issues'.underline
+        puts e
+        puts e.backtrace
+      end
     end
 
   end
