@@ -69,7 +69,7 @@ begin
       puts "[+] ".dark_green + "Payload (claim segment):".bold.underline
       jwt.payload.each {|key, value| puts "  #{'-'.bold} #{key}: #{value}"}
       puts "[+] ".dark_green + "Signature (envelope segment) - encoded:".bold.underline
-      puts "#{Base64.urlsafe_encode64(jwt.signature)}"
+      puts encode(jwt.signature) || '---[ no signature ]---'
 
     # checking missing for generate_token
     when options[:generate_token] && (options[:header] || options[:payload] || options[:key]).nil?

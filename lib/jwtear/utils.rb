@@ -13,7 +13,7 @@ module JWTear
     end
     
     def encode(data)
-      Base64.urlsafe_encode64(data, padding: false)
+      Base64.urlsafe_encode64(data, padding: false) unless data.nil?
     end
 
     def decode(data)
