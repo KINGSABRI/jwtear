@@ -44,6 +44,7 @@ option_parser.on('-k', '--key SECRET',
 #                  "Use module - WIP",
 #                  "Use it without argument to list all modules with its usage"
 # ) {|v| options[:key] = v}
+option_parser.on('-v', '--version', 'Check current and latest version') {|v| options[:version] = v}
 option_parser.on('-h', '--help', 'Show this help message') {puts JWTear::Utils.banner , option_parser; exit!}
 option_parser.on_tail "\nUsage:\n".underline + "jwtear <OPTIONS>"
 option_parser.on_tail "\nExample:".underline
@@ -55,6 +56,16 @@ begin
   option_parser.parse!
   include JWTear::Utils
   case
+    when options[:version]
+      puts "-[#{'Current version'.green}]----"
+      puts JWTear::VERSION
+      if latest_version == JWTear::VERSION
+        puts "[+] ".dark_green + "You have latest version."
+      else
+        puts "-[#{'Latest version'.green}]----"
+        puts latest_version
+        puts "[+] ".dark_green + "Please update. (gem update jwtear)"
+      end
     # parse
     when options[:parse]
       jwt = JWTear::JWT.new(options[:parse])

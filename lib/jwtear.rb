@@ -3,6 +3,7 @@ require 'base64'
 require 'json'
 require 'digest'
 require 'openssl'
+require 'open-uri'
 
 # JWTear
 require_relative 'jwtear/version'
