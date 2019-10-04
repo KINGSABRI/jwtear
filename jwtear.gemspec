@@ -4,7 +4,7 @@ require "jwtear/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "jwtear"
-  spec.version       = JWTear::VERSION
+  spec.version       = "#{JWTear::VERSION}.pre"
   spec.authors       = ["KING SABRI"]
   spec.email         = ["king.sabri@gmail.com"]
 
