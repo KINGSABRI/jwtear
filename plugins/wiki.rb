@@ -25,7 +25,7 @@ module JWTear
       extend JWTear::Helpers::Extensions::Print
 
       def self.read
-        parsed = TTY::Markdown.parse_file('plugins/wiki/README.md', width: 80)
+        parsed = TTY::Markdown.parse_file(File.expand_path(File.join(__dir__ ,  'wiki', 'README.md')), width: 80)
         pager  = TTY::Pager.new
         pager.page(parsed)
       end
