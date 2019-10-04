@@ -23,7 +23,7 @@ install it yourself as:
 
 ## Usage
 
-The main menu 
+- Show the main menu 
 ```
     888888 888       888 88888888888
       "88b 888   o   888     888
@@ -54,7 +54,9 @@ COMMANDS
     parse           - Parse JWT token (accepts JWS and JWE formats).
     wiki, w         - A JWT wiki for hackers.
 ```
+
 - Show a subcommand help, use `-h COMMAND`
+
 ```
 $jwtear -h jws
 
@@ -74,6 +76,7 @@ COMMAND OPTIONS
 ```
 
 - Use a plugin
+
 plugins are defined subcommands. Each subcommand may have one or more argument and/or switches.
 ```
 $ jwtear parse -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.J8SS8VKlI2yV47C4BtfYukWPx_2welF34Mz7l-MNmkE
