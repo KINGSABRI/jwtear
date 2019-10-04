@@ -121,7 +121,7 @@ end
 ```
 Instead of including all dependencies for each plugin into jwtear, you can add these dependencies as a hash to `check_dependencies` method which will require the library and throw a gentle error to the user to install any missing gems.
 
-The hash key is the gem name to install, they value is require string 
+The hash _key_ is the gem name to install, the hash _value_ is the `require` string 
 ```ruby
 deps = {'async-io' => 'async/ip'}
 check_dependencies(deps)
