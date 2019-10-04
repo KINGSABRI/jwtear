@@ -99,9 +99,9 @@ module JWTear
       c.action do |global, options, arguments|
         print_h1 "Plugin template"
         print_good "Hi, I'm a template."
+        template = TemplatePlugin.new
       end
     end
-
   end
 
   module Plugin
