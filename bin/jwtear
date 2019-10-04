@@ -11,18 +11,17 @@ if File.directory?(lib)
   end
 end
 require 'jwtear'
-require 'jwtear/version'
 require 'gli'
 
 module  JWTear
   module CLI
     extend GLI::App
     extend JWTear::Helpers::Utils
-    puts banner
+    # puts banner
     program_desc 'Parse, create and manipulate JWT tokens.'
 
     # CLI settings
-    ENV['GLI_DEBUG'] = "true"
+    ENV['GLI_DEBUG'] = "true"  # Uncomment this line for debugging
     autocomplete_commands true
     subcommand_option_handling :normal
     arguments :strict
@@ -32,6 +31,7 @@ module  JWTear
 
     desc 'Check current and latest version'
     switch [:v, :version],  negatable: false
+    @version = JWTear::VERSION
 
     desc 'Show this help message'
     switch [:h, :help],  negatable: false
