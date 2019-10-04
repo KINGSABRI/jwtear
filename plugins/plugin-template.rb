@@ -10,7 +10,9 @@ module JWTear
     # long_desc "Plugin long description"
     # command [:template, :pt] do |c|
     #   c.action do |g,o,a|
-    #     puts "Hi, I'm a template."
+    #     print_h1 "Plugin template"
+    #     print_good "Hi, I'm a template."
+    #     template = TemplatePlugin.new
     #   end
     # end
 
@@ -24,7 +26,7 @@ module JWTear
       def initialize
         check_dependencies
       end
-
+      # ..code...
     end
   end
 end
