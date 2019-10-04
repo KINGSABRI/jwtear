@@ -33,9 +33,17 @@ module JWTear
       def self.update
         require 'open-uri'
         print_status 'Updating wiki'
-        current_wiki = open(File.join( 'wiki', 'README.md')).read
+        current_wiki = File.expand_path(File.join(__dir__ ,  'wiki', 'README.md'))
         updated_wiki = open('https://raw.githubusercontent.com/KINGSABRI/jwtear/master/plugins/wiki/README.md').read
+        if File.exists?(current_wiki) && File.writable?(current_wiki)
+          File.write(current_wiki, updated_wiki)
+        else
+          print_error "File not accessible #{current_wiki}"
+        end
         print_good 'Update completed.'
+      rescue OpenURI::HTTPError => e
+        print_bad "URL not found (404)."
+        exit!
       end
     end
   end

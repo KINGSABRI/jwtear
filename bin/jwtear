@@ -22,7 +22,7 @@ module  JWTear
     program_desc 'Parse, create and manipulate JWT tokens.'
 
     # CLI settings
-    # ENV['GLI_DEBUG'] = "true"
+    ENV['GLI_DEBUG'] = "true"
     autocomplete_commands true
     subcommand_option_handling :normal
     arguments :strict
@@ -47,8 +47,7 @@ module  JWTear
       else
         print_error "Unknown Exception:"
         print_warning 'Please report the issue to: https://github.com/KINGSABRI/jwtear/issues'.underline
-        puts exception
-        puts exception.backtrace
+        puts exception.full_message
         exit!
       end
     end
