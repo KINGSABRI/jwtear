@@ -54,7 +54,7 @@ COMMANDS
     parse           - Parse JWT token (accepts JWS and JWE formats).
     wiki, w         - A JWT wiki for hackers.
 ```
-To see the subcommand help, use `-h COMMAND`
+- Show a subcommand help, use `-h COMMAND`
 ```
 $jwtear -h jws
 
@@ -72,6 +72,60 @@ COMMAND OPTIONS
     -p, --payload=JSON              - JWT payload (JSON format). eg. {"login":"admin"} (required, default: none)
     -k, --key=PASSWORD|PUB_KEY_FILE - Key as a password string or a file public key. eg. P@ssw0rd  | eg. public_key.pem (default: none)
 ```
+
+- Use a plugin
+plugins are defined subcommands. Each subcommand may have one or more argument and/or switches.
+```
+$ jwtear parse -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.J8SS8VKlI2yV47C4BtfYukWPx_2welF34Mz7l-MNmkE
+$ jwtear jws -h '{"alg":"HS256","typ":"JWT"}' -p '{"user":"admin"}' -k p@ss0rd123
+$ jwtear bruteforce -t eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjpudWxsfQ.Tr0VvdP6rVBGBGuI_luxGCOaz6BbhC6IxRTlKOW8UjM -l ~/tmp/pass.list -v
+```
+
+## Add plugin
+To add a new plugin, create a new ruby file under `plugins` directory with the following structure
+```ruby
+module JWTear
+  module CLI
+    extend GLI::App
+    extend JWTear::Helpers::Extensions::Print
+    extend JWTear::Helpers::Utils
+
+    desc "Plugin short description"
+    long_desc "Plugin long description"
+    command [:template, :pt] do |c|
+      c.action do |global, options, arguments|
+        print_h1 "Plugin template"
+        print_good "Hi, I'm a template."
+      end
+    end
+
+  end
+
+  module Plugin
+    class TemplatePlugin
+      include JWTear::Helpers::Extensions::Print
+      include JWTear::Helpers::Utils
+
+      def initialize
+        check_dependencies
+        # ..code...
+      end
+     
+      # ..code...
+    end
+  end
+end
+```
+Instead of including all dependencies for each plugin into jwtear, you can add these dependencies as a hash to `check_dependencies` method which will require the library and throw a gentle error to the user to install any missing gems.
+
+The hash key is the gem name to install, they value is require string 
+```ruby
+deps = {'async-io' => 'async/ip'}
+check_dependencies(deps)
+```
+Once the missing dependencies are installed by the user, the `check_dependencies` will require them once the plugin class initiated.
+
+
 
 ## Contributing
 
