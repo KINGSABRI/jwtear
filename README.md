@@ -77,7 +77,7 @@ COMMAND OPTIONS
 
 - Use a plugin
 
-plugins are defined subcommands. Each subcommand may have one or more argument and/or switches.
+plugins are defined as subcommands. Each subcommand may have one or more argument and/or switches.
 ```
 $ jwtear parse -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.J8SS8VKlI2yV47C4BtfYukWPx_2welF34Mz7l-MNmkE
 $ jwtear jws -h '{"alg":"HS256","typ":"JWT"}' -p '{"user":"admin"}' -k p@ss0rd123
