@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+#
+# JWTear - A command-line tool and library to parse, create and manipulate JWT tokens for security testing purposes.
+#
+# @Author: KING SABRI - @KINGSABRI
+#
+lib = File.expand_path(File.join(File.dirname(__FILE__), ['/', '..', 'lib']))
+if File.directory?(lib)
+  unless $:.include?(lib)
+    $:.unshift(lib)
+  end
+end
+require 'jwtear'
+require 'jwtear/version'
+require 'gli'
+
+module  JWTear
+  module CLI
+    extend GLI::App
+    extend JWTear::Helpers::Utils
+    puts banner
+    program_desc 'Parse, create and manipulate JWT tokens.'
+
+    # CLI settings
+    # ENV['GLI_DEBUG'] = "true"
+    autocomplete_commands true
+    subcommand_option_handling :normal
+    arguments :strict
+    sort_help :manually
+    wrap_help_text :verbatim #:to_terminal
+    synopsis_format :full #:compact
+
+    desc 'Check current and latest version'
+    switch [:v, :version],  negatable: false
+
+    desc 'Show this help message'
+    switch [:h, :help],  negatable: false
+
+    dir = File.expand_path(File.join(File.dirname(__FILE__), ['..', 'plugins']))
+    commands_from dir if Dir.exist? dir
+
+    on_error do |exception|
+      case exception
+      when GLI::MissingRequiredArgumentsException
+        print_error "Option #{exception.message}"
+        exit!
+      else
+        print_error "Unknown Exception:"
+        print_warning 'Please report the issue to: https://github.com/KINGSABRI/jwtear/issues'.underline
+        puts exception
+        puts exception.backtrace
+        exit!
+      end
+    end
+  end
+end
+exit JWTear::CLI.run(ARGV)
