@@ -68,7 +68,6 @@ module JWTear
         else
           print_bad "Invalid key: #{keys}"
         end
-
       else
         print_error "Unknown key type"
         raise
