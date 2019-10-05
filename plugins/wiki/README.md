@@ -164,6 +164,8 @@ This carries the same meaning as explained under JWE compact serialization, prev
 
 This carries the same meaning as explained under JWE compact serialization, previously. The tag element in the JWE token carries the base64url-encoded value of the JWE authenticated tag, which is an outcome of the encryption process using an AEAD algorithm.
 
+_source(JWT, JWS and JWE for Not So Dummies! (Part I))_
+
 ---
 
 
