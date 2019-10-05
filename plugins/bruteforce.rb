@@ -46,6 +46,7 @@ module JWTear
       case
       when keys.kind_of?(Enumerator::Lazy)
         keys.each do |key|
+          key.valid_encoding? ? key.strip! : next
           print_status "Trying password: #{key}" if verbose
 
           gen_token = @token.generate(:jws, header: @jws.header.to_json, payload:@jws.payload.to_json , key: key)
@@ -56,7 +57,6 @@ module JWTear
             exit!
           else
             print_bad "Invalid key: #{key}" if verbose
-            # puts gen_token if verbose
           end
         end
       when keys.kind_of?(String)
@@ -89,7 +89,6 @@ module JWTear
         print_status "Found '#{file}' file."
         File.readlines(file, chomp: true)
             .lazy
-            .map(&:strip)
             .reject(&:empty?)
             .reject(&:nil?)
       else
