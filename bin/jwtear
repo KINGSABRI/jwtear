@@ -43,13 +43,13 @@ module  JWTear
       case exception
       when GLI::MissingRequiredArgumentsException
         print_error "Option #{exception.message}"
-        exit!
       else
         print_error "Unknown Exception:"
         print_warning 'Please report the issue to: https://github.com/KINGSABRI/jwtear/issues'.underline
         puts exception.full_message
-        exit!
       end
+
+      true
     end
   end
 end
