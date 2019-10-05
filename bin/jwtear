@@ -21,7 +21,7 @@ module  JWTear
     program_desc 'Parse, create and manipulate JWT tokens.'
 
     # CLI settings
-    ENV['GLI_DEBUG'] = "true"  # Uncomment this line for debugging
+    # ENV['GLI_DEBUG'] = "true"  # Uncomment this line for debugging
     autocomplete_commands true
     subcommand_option_handling :normal
     arguments :strict
@@ -42,6 +42,8 @@ module  JWTear
     on_error do |exception|
       case exception
       when GLI::MissingRequiredArgumentsException
+        print_error "Option #{exception.message}"
+      when GLI::UnknownCommandArgument
         print_error "Option #{exception.message}"
       else
         print_error "Unknown Exception:"
