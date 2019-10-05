@@ -81,7 +81,8 @@ plugins are defined as subcommands. Each subcommand may have one or more argumen
 ```
 $ jwtear parse -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.J8SS8VKlI2yV47C4BtfYukWPx_2welF34Mz7l-MNmkE
 $ jwtear jws -h '{"alg":"HS256","typ":"JWT"}' -p '{"user":"admin"}' -k p@ss0rd123
-$ jwtear bruteforce -t eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjpudWxsfQ.Tr0VvdP6rVBGBGuI_luxGCOaz6BbhC6IxRTlKOW8UjM -l ~/tmp/pass.list -v
+$ jwtear jwe -header '{"enc":"A192GCM","typ":"JWT"}' --payload '{"user":"admin"}' --key public.pem 
+$ jwtear bruteforce -v -t eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjpudWxsfQ.Tr0VvdP6rVBGBGuI_luxGCOaz6BbhC6IxRTlKOW8UjM -l ~/tmp/pass.list
 ```
 
 ## Add plugin
