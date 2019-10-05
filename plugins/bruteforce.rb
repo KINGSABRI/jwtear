@@ -25,7 +25,6 @@ module JWTear
           bf.run(options[:verbose])
         end
       end
-
     end
   end
 
@@ -73,7 +72,7 @@ module JWTear
         raise
       end
     end
-    
+
     def handle_key
       if File.file?(@list)
         read_wordlist(@list)
@@ -94,7 +93,6 @@ module JWTear
         exit!
       end
     end
-
   end
 end
 
