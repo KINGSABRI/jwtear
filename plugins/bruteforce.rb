@@ -16,7 +16,7 @@ module JWTear
       c.desc "Run verbosely."
       c.switch [:v, :verbose], negatable: false
 
-      c.example  %Q{jwtear bruteforce -t TOKEN -l rockyou.list -v}
+      c.example  %Q{jwtear bruteforce -v -t TOKEN -l rockyou.list}
       c.example  %Q{jwtear bruteforce -t TOKEN -l P@ssw0rd123}
 
       c.action do |_, options, _|
