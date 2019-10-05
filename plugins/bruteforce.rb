@@ -74,11 +74,7 @@ module JWTear
     end
 
     def handle_key
-      if File.file?(@list)
-        read_wordlist(@list)
-      else
-        @list
-      end
+      File.file?(@list) ? read_wordlist(@list) : @list
     end
 
     def read_wordlist(file)
