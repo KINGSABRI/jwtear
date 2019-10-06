@@ -92,6 +92,12 @@ module JWTear
       exit!
     end
 
+    # is_encrypted?
+    #   to check if the given string in a JSON format or its encrypted.
+    #   Used mostly with @encrypted_key as it might come in different format.
+    # @param item [JSON|STRING]
+    #
+    # @return [Boolean]
     def is_encrypted?(item)
       JSON.parse item
       false
