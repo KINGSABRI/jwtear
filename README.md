@@ -135,6 +135,19 @@ Once the missing dependencies are installed by the user, the `check_dependencies
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/jwtear.
 
+1. Fork it ( https://github.com/KINGSABRI/jwtear/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
+
+### Areas to contribute
+- contribution by reporting bugs.
+- contribution by perfecting the current code.
+- contribution by adding new plugins.
+- contribution by enhancing the [jwtear wiki](https://github.com/KINGSABRI/jwtear/tree/master/plugins/wiki).
+- contribution by requesting features and/or plugins.
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
