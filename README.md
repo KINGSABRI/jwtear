@@ -1,19 +1,22 @@
 # Jwtear
-A modular Command-line tool to parse, create and manipulate JSON Web Token(JWT) tokens for security testing purposes. 
+A modular command-line tool to parse, create and manipulate JSON Web Token(JWT) tokens for security testing purposes. 
 
 ## Features
 - Complete modularity.
     - All commands are plugins.
-    - Easy to add a new plugins.
+    - Easy to add new plugins.
     - Support JWS and JWE tokens.  
 - Easy interface for plugins. (follow the template example)
+- Flexible
+- token generation based on production-class libraries (e.g. json-jwt, jwe).
+
 
 ### Available plugins
 - Parse: parses jwt tokens.
 - jws: manipulate and generate JWS tokens.
 - jwe: manipulate and generate JWE tokens.
 - bruteforce: brutefocing JWS signing key
-- wiki: contains information about JWT, attacks ideas, references.
+- wiki: contains offline information about JWT, attacks ideas, references.
 
 ## Installation
 
