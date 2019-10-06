@@ -21,13 +21,13 @@ module  JWTear
     program_desc 'Parse, create and manipulate JWT tokens.'
 
     # CLI settings
-    # ENV['GLI_DEBUG'] = "true"  # Uncomment this line for debugging
-    autocomplete_commands true
+    # ENV['GLI_DEBUG'] =      "true"  # Uncomment this line for debugging
+    autocomplete_commands      true
     subcommand_option_handling :normal
-    arguments :strict
-    sort_help :manually
-    wrap_help_text :verbatim #:to_terminal
-    synopsis_format :full #:compact
+    arguments                  :strict
+    sort_help                  :manually
+    wrap_help_text             :verbatim
+    synopsis_format            :full
 
     desc 'Check current and latest version'
     switch [:v, :version],  negatable: false
