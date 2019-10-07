@@ -40,7 +40,7 @@ module  JWTear
     commands_from dir if Dir.exist? dir
 
     trap("INT") do
-      puts 
+      puts
       print_error "User interruption!"
       print_warning "Exiting jwtear process."
       exit!
