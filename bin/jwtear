@@ -46,7 +46,7 @@ module  JWTear
       exit!
     end
 
-    puts banner if ARGV.empty? 
+    puts banner if ARGV.empty?
     on_error do |exception|
       puts banner
       case exception
