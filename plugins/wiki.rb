@@ -5,7 +5,7 @@ module JWTear
     extend JWTear::Helpers::Utils
 
     desc "A JWT wiki for hackers."
-    long_desc "Wiki wiki Wiki wiki Wiki wiki Wiki wiki Wiki wiki Wiki wiki"
+    long_desc "A JWT wiki contains introduction, attack ideas, vulnerable application links and resources."
     command [:wiki, :w] do |c|
 
       c.desc "Show the wiki page on terminal"
