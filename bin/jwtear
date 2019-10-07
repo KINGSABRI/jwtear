@@ -17,7 +17,7 @@ module  JWTear
   module CLI
     extend GLI::App
     extend JWTear::Helpers::Utils
-    puts banner
+
     program_desc 'Parse, create and manipulate JWT tokens.'
 
     # CLI settings
@@ -40,6 +40,7 @@ module  JWTear
     commands_from dir if Dir.exist? dir
 
     on_error do |exception|
+      puts banner
       case exception
       when GLI::MissingRequiredArgumentsException
         print_error "Option #{exception.message}"
