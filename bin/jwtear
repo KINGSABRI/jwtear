@@ -39,9 +39,18 @@ module  JWTear
     dir = File.expand_path(File.join(File.dirname(__FILE__), ['..', 'plugins']))
     commands_from dir if Dir.exist? dir
 
+    trap("INT") do
+      puts 
+      print_error "User interruption!"
+      print_warning "Exiting jwtear process."
+      exit!
+    end
+
     on_error do |exception|
       puts banner
       case exception
+      when GLI::UnknownGlobalArgument
+        print_error "#{exception.message}"
       when GLI::MissingRequiredArgumentsException
         print_error "Option #{exception.message}"
       when OptionParser::MissingArgument
