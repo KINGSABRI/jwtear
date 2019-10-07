@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jwtear (1.0.1.pre)
+    jwtear (1.0.3)
       gli (~> 2.19, >= 2.19.0)
       json-jwt (~> 1.10, >= 1.10.2)
       jwe (~> 0.4.0)
