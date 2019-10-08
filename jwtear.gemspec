@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'jwe',          "~> 0.4.0"
   spec.add_dependency 'tty-markdown', "~> 0.6.0"
   spec.add_dependency 'tty-pager',    "~> 0.12.1"
+  spec.add_dependency 'colorize',     "~> 0.8.1"
 
   # spec.add_development_dependency('rake', '~> 0.9.2.2')
 end
