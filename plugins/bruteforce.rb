@@ -33,7 +33,7 @@ module JWTear
     include JWTear::Helpers::Utils
 
     def initialize(token, list)
-      deps = {'async-io' => 'async/io'}
+      deps = {}
       check_dependencies(deps)
       @token = Token.new
       @jws   = @token.parse(token)
@@ -48,7 +48,7 @@ module JWTear
           key.valid_encoding? ? key.strip! : next
           print_status "Trying password: #{key}" if verbose
 
-          gen_token = @token.generate(:jws, header: @jws.header.to_json, payload:@jws.payload.to_json , key: key)
+          gen_token = @token.generate(:jws, header: @jws.header.to_json, payload: @jws.payload.to_json , key: key)
           sig = gen_token.split('.').last
           if sig == Base64.urlsafe_encode64(@jws.signature, padding: false)
             print_good "Password found: #{key}"
@@ -59,7 +59,7 @@ module JWTear
           end
         end
       when keys.kind_of?(String)
-        gen_token = @token.generate(:jws, header: @jws.header.to_json, payload:@jws.payload.to_json , key: keys)
+        gen_token = @token.generate(:jws, header: @jws.header.to_json, payload: @jws.payload.to_json , key: keys)
         sig = gen_token.split('.').last
         if sig == Base64.urlsafe_encode64(@jws.signature, padding: false)
           print_good "Password found: #{keys}"

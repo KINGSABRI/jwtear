@@ -27,18 +27,18 @@ module JWTear
       # check_dependencies
       #   check dependencies for plugins and throw a gentle error if not installed
       # @param deps [Hash]
-      #   The key is the library to be require, the key is the gem to be required
+      #   The key is the key is the gem name to be installed, the value is library to be require
       # @example
       #   deps = {'async-io' => 'async/ip'}
       #   check_dependencies(deps)
       #
       def check_dependencies(deps={})
-        return if deps.empty?
+        return if deps.empty? or deps.nil?
         missing = []
 
-        deps.each do |gem, req|
+        deps.each do |gem, lib|
           begin
-            require req
+            require lib
           rescue LoadError
             missing << gem
           end
