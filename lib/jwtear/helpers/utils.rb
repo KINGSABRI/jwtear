@@ -19,8 +19,10 @@ module JWTear
 
       # read key as a string or from file(eg. pub_key.pem)
       def read_key(key)
-        if key
-          File.file?(key)? File.read(key) : key
+        if File.file?(File.absolute_path(key))
+          File.read(File.absolute_path(key))
+        else
+          key
         end
       end
 
