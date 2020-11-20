@@ -23,10 +23,9 @@ module JWTear
         @jwe.parse(token)
       end
     rescue Exception => e
-      print_error "Unknown Exception: #{method(__method__).owner}"
+      print_error "#{method(__method__).owner}##{__method__} : Unknown Exception"
       print_warning 'Please report the issue to: https://github.com/KINGSABRI/jwtear/issues'.underline
-      puts e
-      puts e.backtrace
+      puts e.full_message
       exit!
     end
 
