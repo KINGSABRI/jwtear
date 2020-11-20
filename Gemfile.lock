@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jwtear (1.0.5)
+    jwtear (1.0.6)
       colorize (~> 0.8.1)
       gli (~> 2.19, >= 2.19.0)
       json-jwt (~> 1.11, >= 1.11.0)
