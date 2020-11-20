@@ -58,10 +58,10 @@ module JWTear
       cipher_text = Base64.urlsafe_encode64(@cipher_text, padding: false)
       authentication_tag = Base64.urlsafe_encode64(@authentication_tag, padding: false)
 
-      "#{header.to_json}" + "●" +
-      "#{encrypted_key}"  + "●" +
-      "#{iv}"             + "●" +
-      "#{cipher_text}"    + "●" +
+      "#{header.to_json}" + ".".bold +
+      "#{encrypted_key}"  + ".".bold +
+      "#{iv}"             + ".".bold +
+      "#{cipher_text}"    + ".".bold +
       "#{authentication_tag}"
     end
 
@@ -78,7 +78,7 @@ module JWTear
       key = OpenSSL::PKey::RSA.new(key)
       jwt = JSON::JWT.new(JSON.parse(payload, symbolize_names: true))
       jwt.header = JSON.parse(header, symbolize_names: true)
-      ::JWE.encrypt(payload, key, enc: jwt.header[:enc]) # I had to use this gem as json-jwt does not support A192GCM AFAIK
+      ::JWE.encrypt(payload, key, enc: jwt.header[:enc]) # I had to use this gem as jwe does not support A192GCM AFAIK
     rescue TypeError => e
       print_bad "Invalid data type."
       print_warning "Make sure your public/private key file exists."
