@@ -20,7 +20,7 @@ module JWTear
       jws_cmd.desc "Key as a password string or a file public key. eg. P@ssw0rd  | eg. public_key.pem"
       jws_cmd.arg_name 'PASSWORD|PUB_KEY_FILE'
       jws_cmd.flag [:k, :key]
-      jws_cmd.action do |global, options, args|
+      jws_cmd.action do |_, options, _|
         gen = Generate.new
         puts gen.jws_token(options[:header], options[:payload], read_key(options[:key]))
       end
