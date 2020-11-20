@@ -39,7 +39,7 @@ module JWTear
     end
 
     def to_json_presentation
-      "#{@header.to_json}" + "●" + "#{@payload.to_json}" + "●" + "#{Base64.urlsafe_encode64(@signature, padding: false)}"
+      "#{@header.to_json}" + ".".bold + "#{@payload.to_json}" + ".".bold + "#{Base64.urlsafe_encode64(@signature, padding: false)}"
     end
 
     # generate_jws
@@ -59,6 +59,8 @@ module JWTear
       puts "Unexpected algorithm '#{jwt.header[:alg]}'."
       puts e.message
       exit!
+    rescue Exception => e
+      print_error e.message
     end
     
     private
@@ -73,6 +75,24 @@ module JWTear
         jwt.to_s
       else
         raise JSON::JWS::UnexpectedAlgorithm.new("Encryption algorithm '#{jwt.alg}' requires key.") if key.nil?
+        alg = jwt.alg.upcase
+        case
+        when alg.start_with?("HS")
+          key
+        when alg.start_with?("RS")
+          key = OpenSSL::PKey::RSA.new(key)
+        when alg.start_with?("PS")
+          key = OpenSSL::PKey::RSA.new(key)
+        when alg.start_with?("ES")
+          # key = OpenSSL::PKey::RSA.new(key)
+          print_error("Signing for ECDSA-SHA is not yet implemented")
+          print_warning 'Please report the issue to: https://github.com/KINGSABRI/jwtear/issues'.underline
+        else
+          print_warning("Undefined algorithm. This might generate a wrong token")
+          print_warning 'Please report the issue to: https://github.com/KINGSABRI/jwtear/issues'.underline
+          key
+        end
+        jwt.alg = alg.to_sym
         jwt.sign(key).to_s
       end
     end
