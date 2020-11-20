@@ -1,0 +1,73 @@
+PATH
+  remote: .
+  specs:
+    jwtear (1.0.5)
+      colorize (~> 0.8.1)
+      gli (~> 2.19, >= 2.19.0)
+      json-jwt (~> 1.11, >= 1.11.0)
+      jwe (~> 0.4.0)
+      tty-markdown (~> 0.6.0)
+      tty-pager (~> 0.12.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (6.0.3.4)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+      zeitwerk (~> 2.2, >= 2.2.2)
+    aes_key_wrap (1.1.0)
+    bindata (2.4.8)
+    colorize (0.8.1)
+    concurrent-ruby (1.1.7)
+    equatable (0.6.1)
+    gli (2.19.2)
+    i18n (1.8.5)
+      concurrent-ruby (~> 1.0)
+    json-jwt (1.13.0)
+      activesupport (>= 4.2)
+      aes_key_wrap
+      bindata
+    jwe (0.4.0)
+    kramdown (1.16.2)
+    minitest (5.14.2)
+    pastel (0.7.4)
+      equatable (~> 0.6)
+      tty-color (~> 0.5)
+    rouge (3.25.0)
+    strings (0.1.8)
+      strings-ansi (~> 0.1)
+      unicode-display_width (~> 1.5)
+      unicode_utils (~> 1.4)
+    strings-ansi (0.2.0)
+    thread_safe (0.3.6)
+    tty-color (0.6.0)
+    tty-markdown (0.6.0)
+      kramdown (~> 1.16.2)
+      pastel (~> 0.7.2)
+      rouge (~> 3.3)
+      strings (~> 0.1.4)
+      tty-color (~> 0.4)
+      tty-screen (~> 0.6)
+    tty-pager (0.12.1)
+      strings (~> 0.1.4)
+      tty-screen (~> 0.6)
+      tty-which (~> 0.4)
+    tty-screen (0.8.1)
+    tty-which (0.4.2)
+    tzinfo (1.2.8)
+      thread_safe (~> 0.1)
+    unicode-display_width (1.7.0)
+    unicode_utils (1.4.0)
+    zeitwerk (2.4.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  jwtear!
+
+BUNDLED WITH
+   2.1.4
