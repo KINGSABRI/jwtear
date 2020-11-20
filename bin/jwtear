@@ -58,6 +58,8 @@ module  JWTear
         print_error "Option #{exception.message}"
       when GLI::UnknownCommandArgument
         print_error "#{exception.message}"
+      when GLI::UnknownCommand
+        print_error "#{exception.message}"
       else
         print_error "Unknown Exception:"
         print_warning 'Please report the issue to: https://github.com/KINGSABRI/jwtear/issues'.underline
