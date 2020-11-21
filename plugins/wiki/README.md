@@ -198,6 +198,7 @@ _source(JWT, JWS and JWE for Not So Dummies! (Part I))_
 * [Pentesterlab(PRO)  - JWT X](https://pentesterlab.com/exercises/jwt_x/)
 * [Pentesterlab(PRO)  - JWT XI](https://pentesterlab.com/exercises/jwt_xi)
 * [Pentesterlab(PRO)  - JWT XII](https://pentesterlab.com/exercises/jwt_xii)
+* [Pentesterlab(PRO)  - JWT XIII](https://pentesterlab.com/exercises/jwt_iii)
 * [Pentesterlab(PRO)  - JSON Web Encryption](https://pentesterlab.com/exercises/jwe)
 * [Vulnerable JWT implementations](https://github.com/Sjord/jwtdemo)
 
