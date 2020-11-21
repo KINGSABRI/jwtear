@@ -212,3 +212,4 @@ _source(JWT, JWS and JWE for Not So Dummies! (Part I))_
 * [Damn Vulnerable Service](https://github.com/snoopysecurity/dvws)
 * [CSRF JWT redirect leak](https://gist.github.com/stefanocoding/8cdc8acf5253725992432dedb1c9c781)
 * [Critical vulnerabilities in JSON Web Token libraries](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/)
+* [JWT Attack Playbook](https://github.com/ticarpi/jwt_tool/wiki)
