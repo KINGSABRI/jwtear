@@ -19,7 +19,7 @@ GEM
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2, >= 2.2.2)
     aes_key_wrap (1.1.0)
-    bindata (2.4.8)
+    bindata (2.4.10)
     colorize (0.8.1)
     concurrent-ruby (1.1.7)
     equatable (0.6.1)
