@@ -34,7 +34,7 @@ module JWTear
         require 'open-uri'
         print_status 'Updating wiki'
         current_wiki = File.expand_path(File.join(__dir__ ,  'wiki', 'README.md'))
-        updated_wiki = open('https://raw.githubusercontent.com/KINGSABRI/jwtear/master/plugins/wiki/README.md').read
+        updated_wiki = URI.open('https://raw.githubusercontent.com/KINGSABRI/jwtear/master/plugins/wiki/README.md').read
         if File.exists?(current_wiki) && File.writable?(current_wiki)
           File.write(current_wiki, updated_wiki)
         else
