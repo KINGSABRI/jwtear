@@ -18,11 +18,11 @@ Gem::Specification.new do |spec|
   spec.executables   = ['jwtear']
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'gli',          '~> 2.19', '>= 2.19.0'
-  spec.add_dependency 'json-jwt',     '~> 1.11', '>= 1.11.0'
+  spec.add_dependency 'gli',          '~> 2.20', '>= 2.20.0'
+  spec.add_dependency 'json-jwt',     '~> 1.13.0'
   spec.add_dependency 'jwe',          "~> 0.4.0"
-  spec.add_dependency 'tty-markdown', "~> 0.6.0"
-  spec.add_dependency 'tty-pager',    "~> 0.12.1"
+  spec.add_dependency 'tty-markdown', "~> 0.7.0"
+  spec.add_dependency 'tty-pager',    "~> 0.14.0"
   spec.add_dependency 'colorize',     "~> 0.8.1"
 
   # spec.add_development_dependency('rake', '~> 0.9.2.2')
