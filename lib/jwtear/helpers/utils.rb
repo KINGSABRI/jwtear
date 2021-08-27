@@ -46,7 +46,7 @@ module JWTear
           end
         end
       ensure
-        unless missing.empty?
+        unless missing.nil? or missing.empty?
           print_error "Missing dependencies!"
           print_warning "Please install as follows:"
           puts "gem install #{missing.join(' ')}"
