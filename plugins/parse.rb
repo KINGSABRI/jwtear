@@ -1,3 +1,5 @@
+require 'time'
+
 module JWTear
   module CLI
     extend GLI::App
@@ -83,10 +85,28 @@ module JWTear
       def print_jws_payload(payload)
         print_h2 "Payload"
         payload.each do |k, v|
-          print_h3 "#{k}" , "#{v}"
+          if k == "iat" || k == "nbf"
+            print_h3 "#{k}" , "#{v}", "\tTIMESTAMP = #{Time.at(v)}".green
+          elsif k == "exp" 
+            compare_time_with_now(k,v)
+          else
+            print_h3 "#{k}" , "#{v}"
+          end          
         end
       end
 
+      def compare_time_with_now(k, timestamp)
+        if timestamp.nil?
+          return
+        end
+        readable_time = Time.at(timestamp)
+        if readable_time < Time.now
+          print_h3 "#{k}", "#{timestamp}", "\tTIMESTAMP = #{readable_time}\t(EXPIRED)".red
+        else
+          print_h3 "#{k}", "#{timestamp}", "\tTIMESTAMP = #{readable_time}".green
+        end
+      end
+      
       def print_jws_sig(signature)
         print_h2 "Signature - B64 encoded"
         puts Base64.urlsafe_encode64(@token.signature, padding: false)
