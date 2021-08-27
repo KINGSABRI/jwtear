@@ -85,8 +85,8 @@ module JWTear
       def print_jws_payload(payload)
         print_h2 "Payload"
         payload.each do |k, v|
-          if k == "iat" || k == "nbf"
-            print_h3 "#{k}" , "#{v}", "\tTIMESTAMP = #{Time.at(v)}".green
+          if k == "iat" || k == "nbf"            
+            print_h3 "#{k}" , "#{v}", "\tTIMESTAMP = #{Time.at(v.to_i)}".green
           elsif k == "exp" 
             compare_time_with_now(k,v)
           else
@@ -99,7 +99,7 @@ module JWTear
         if timestamp.nil?
           return
         end
-        readable_time = Time.at(timestamp)
+        readable_time = Time.at(timestamp.to_i)
         if readable_time < Time.now
           print_h3 "#{k}", "#{timestamp}", "\tTIMESTAMP = #{readable_time}\t(EXPIRED)".red
         else
