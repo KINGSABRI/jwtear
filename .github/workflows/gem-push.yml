@@ -1,4 +1,4 @@
-name: Ruby Gem
+name: Push2RubyGems
 
 on:
   push:
