@@ -3,7 +3,7 @@ PATH
   specs:
     jwtear (1.0.7)
       colorize (~> 0.8.1)
-      gli (~> 2.20.1, >= 2.20.1)
+      gli (~> 2.20, >= 2.20.0)
       json-jwt (~> 1.13.0)
       jwe (~> 0.4.0)
       tty-markdown (~> 0.7.0)
